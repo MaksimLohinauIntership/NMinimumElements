@@ -13,8 +13,6 @@ namespace NMinimumElements
             var list = new List<int>() { 1, 3, 99, 2, 4, 11, 22, 24, 21, 25 };
 
             var i = list.Min(3);
-            
-
         }
     }
 

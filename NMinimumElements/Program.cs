@@ -12,9 +12,10 @@ namespace NMinimumElements
     {
         static void Main(string[] args)
         {
-            var list = new List<int>() { 77, 3, 99, 2, 11, 5, 4,38, 22 };
+            var list = new List<int>() { 77, 3, 99, 2, 11, 5, 4,38, 22,122,143,7,8,94,21 };
 
-            var i = list.Min(3);
+            var i = list.Min(7);
+            Console.ReadLine();
         }
     }
 
@@ -27,29 +28,52 @@ namespace NMinimumElements
             if (n < 1) 
                 throw new ArgumentOutOfRangeException(nameof(n), "N must be greater than 0.");
 
-            List<int> minValues = new List<int>();
+            LinkedList<int> result = new LinkedList<int>();
 
-            List<int> list = new List<int>(collection);
-            int temp;
-            for (int i = 0; i < list.Count - 1; i++)
+            foreach (var item in collection)
             {
-                for(int j = 0; j < list.Count - 1 - i; j++)
+                if (result.Count < n)
                 {
-                    if (list[j] > list[j + 1])
+                    AddInSortedOrder(result, item);
+                }
+                else
+                {
+                    if (item < result.Last.Value)
                     {
-                        temp = list[j];
-                        list[j] = list[j + 1];
-                        list[j + 1] = temp;
+                        result.RemoveLast();
+                        AddInSortedOrder(result, item);
                     }
                 }
             }
 
-            for(int i = 0; i < n; i++)
+            return result;
+        }
+        private static void AddInSortedOrder(LinkedList<int> list, int item)
+        {
+            if (list.Count == 0)
             {
-                minValues.Add(list[i]);
+                list.AddFirst(item);
+                return;
             }
 
-            return minValues;
+            var current = list.First;
+            while (current != null && current.Value < item)
+            {
+                current = current.Next;
+            }
+
+            if (current == null) // Если дошли до конца списка
+            {
+                list.AddLast(item);
+            }
+            else if (current == list.First) // Если элемент меньше самого маленького
+            {
+                list.AddFirst(item);
+            }
+            else // Вставляем перед текущим элементом
+            {
+                list.AddBefore(current, item);
+            }
         }
     }
 }
